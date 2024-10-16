@@ -1,8 +1,8 @@
 import 'package:chat_app2/constants.dart';
 import 'package:chat_app2/helper/show_snack_bar.dart';
 import 'package:chat_app2/screens/chat_page.dart';
-import 'package:chat_app2/screens/cubits/login_cubit/login_state.dart';
-import 'package:chat_app2/screens/cubits/login_cubit/login_cubit.dart';
+import 'package:chat_app2/screens/cubits/auth_cubit/auth_cubit.dart';
+import 'package:chat_app2/screens/cubits/chat_cubit/chat_cubit.dart';
 import 'package:chat_app2/screens/register_page.dart';
 import 'package:chat_app2/widgets/custom_button.dart';
 import 'package:chat_app2/widgets/custom_text_field.dart';
@@ -23,19 +23,20 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubit, LoginState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoginLoding) {
           isLoding = true;
         } else if (state is LoginSuccess) {
-          Navigator.pushNamed(context, ChatPage.id);
+          BlocProvider.of<ChatCubit>(context).getMessages();
+          Navigator.pushNamed(context, ChatPage.id, arguments: email);
           isLoding = false;
         } else if (state is LoginFailure) {
           showSnackBar(context, state.errMessage);
           isLoding = false;
         }
       },
-      child: ModalProgressHUD(
+      builder: (context, state) => ModalProgressHUD(
         inAsyncCall: isLoding,
         child: Scaffold(
           backgroundColor: kPrimaryColor,
@@ -106,7 +107,7 @@ class LoginPage extends StatelessWidget {
                   CustomButton(
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        BlocProvider.of<LoginCubit>(context)
+                        BlocProvider.of<AuthCubit>(context)
                             .loginUser(email: email!, password: password!);
                       } else {}
                     },

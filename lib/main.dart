@@ -1,6 +1,6 @@
 import 'package:chat_app2/screens/chat_page.dart';
-import 'package:chat_app2/screens/cubits/login_cubit/login_cubit.dart';
-import 'package:chat_app2/screens/cubits/register_cubit/register_cubit.dart';
+import 'package:chat_app2/screens/cubits/auth_cubit/auth_cubit.dart';
+import 'package:chat_app2/screens/cubits/chat_cubit/chat_cubit.dart';
 import 'package:chat_app2/screens/login_page.dart';
 import 'package:chat_app2/screens/register_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,14 +25,14 @@ class ScholarCate extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => LoginCubit()),
-        BlocProvider(create: (context) => RegisterCubit())
+        BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(create: (context) => ChatCubit())
       ],
       child: MaterialApp(
         routes: {
           LoginPage.id: (context) => LoginPage(),
           RegisterPage.id: (context) => RegisterPage(),
-          ChatPage.id: (context) => const ChatPage(),
+          ChatPage.id: (context) => ChatPage(),
         },
         debugShowCheckedModeBanner: false,
         initialRoute: LoginPage.id,

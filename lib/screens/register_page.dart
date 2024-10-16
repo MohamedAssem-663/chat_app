@@ -1,7 +1,7 @@
 import 'package:chat_app2/constants.dart';
 import 'package:chat_app2/helper/show_snack_bar.dart';
 import 'package:chat_app2/screens/chat_page.dart';
-import 'package:chat_app2/screens/cubits/register_cubit/register_cubit.dart';
+import 'package:chat_app2/screens/cubits/auth_cubit/auth_cubit.dart';
 import 'package:chat_app2/widgets/custom_button.dart';
 import 'package:chat_app2/widgets/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +20,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegisterCubit, RegisterState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterLoding) {
           isLoding = true;
@@ -104,7 +104,7 @@ class RegisterPage extends StatelessWidget {
                     CustomButton(
                       onTap: () async {
                         if (formKey.currentState!.validate()) {
-                          BlocProvider.of<RegisterCubit>(context)
+                          BlocProvider.of<AuthCubit>(context)
                               .registerUser(email: email!, password: password!);
                         } else {}
                       },
